@@ -1,38 +1,38 @@
 # Full-Stack Sudoku Solver Web App
 
-A comprehensive documentation for the **Full-Stack Sudoku Solver**, an end-to-end web application that enables users to input, validate, and solve Sudoku puzzles using a powerful recursive backtracking algorithm.  
-This document outlines the project structure, setup process, logic flow, and API usage.
+A complete end-to-end Sudoku Solver web application that allows users to input, validate, and solve Sudoku puzzles in real time. The project integrates a modern React-based frontend with a TypeScript-powered backend and a recursive backtracking algorithm for efficient puzzle solving.
 
 ---
 
 ## 1. Overview
 
-The Sudoku Solver Web App is a **full-stack application** composed of:
+The Full-Stack Sudoku Solver is composed of three main layers:
 
-- **Frontend:** React (with Vite) for building an interactive Sudoku UI.
-- **Backend:** Express + TypeScript for managing routes, API endpoints, and solver execution.
-- **Solver Logic:** Implemented in pure JavaScript with a backtracking algorithm.
+- Frontend: Built with React and Vite for an interactive web interface.
+- Backend: Developed using Express and TypeScript to handle API logic and solver execution.
+- Solver Engine: A pure JavaScript implementation of the backtracking algorithm for solving puzzles efficiently.
 
-It provides an intuitive user interface to input puzzles, validate them client-side, and request automated solutions from the backend.
+The app enables users to input Sudoku puzzles, validate board configurations, and request AI-assisted solutions with instant feedback.
 
 ---
 
 ## 2. Architecture Overview
 
 ### Frontend
-- Built with **React** and served using **Vite**.
-- Contains the **SudokuGrid** component for rendering the 9×9 board.
-- Includes a **ControlPanel** for user actions such as solving, clearing, and validating puzzles.
+- Developed using React + Vite.
+- Contains the `SudokuGrid` component for rendering a 9×9 interactive board.
+- The `ControlPanel` component handles Solve, Validate, and Clear interactions.
+- Uses Tailwind CSS for responsive design and styling.
 
 ### Backend
-- Powered by **Express**.
-- Handles client requests for Sudoku validation and solving.
-- Integrates with Vite for development mode using `setupVite`.
+- Implemented in Express with TypeScript support.
+- Hosts API routes (`/api/solve`, `/api/validate`) for puzzle processing.
+- Integrates with Vite middleware for seamless development in a single server context.
 
 ### Solver
-- Located in `sudoku-solver.js`.
-- Uses **recursive backtracking** to compute valid solutions.
-- Returns structured responses with either a solved board or an error message.
+- Defined in `sudoku-solver.js`.
+- Implements recursive backtracking for constraint-based Sudoku resolution.
+- Handles invalid or unsolvable configurations safely with structured error responses.
 
 ---
 
@@ -56,8 +56,8 @@ root/
 │   └── schema.ts
 │
 ├── screenshots/
-│   ├── main.png
-│   └── Solved.png
+│   ├── interface.png
+│   └── solved.png
 │
 ├── package.json
 ├── vite.config.ts
@@ -69,41 +69,39 @@ root/
 
 ## 4. Solver Logic
 
-### Key Functions
+### Core Functions
 
-| Function | Purpose |
-|-----------|----------|
-| **isValidSudoku(board)** | Validates the Sudoku board structure and initial configuration. |
-| **isValid(board, row, col, num)** | Checks whether a number can be placed at a specific position. |
-| **findEmptyCell(board)** | Finds the next unfilled cell in the board. |
-| **solveSudoku(board)** | Recursive function implementing the backtracking algorithm. |
-| **solve(board)** | Public entry point: validates input, copies the board, and attempts to solve it. |
+| Function | Description |
+|-----------|-------------|
+| `isValidSudoku(board)` | Verifies the input grid has valid dimensions and no duplicate entries. |
+| `isValid(board, row, col, num)` | Checks whether a value can be placed at a specific position. |
+| `findEmptyCell(board)` | Finds the next empty cell on the board (denoted by 0). |
+| `solveSudoku(board)` | Performs the recursive backtracking search for a valid solution. |
+| `solve(board)` | Main entry logic for validation, deep copying, and result generation. |
 
-### Algorithm Flow
+### Algorithm Overview
 
-1. Identify the next empty cell (`0`).
-2. Iterate through numbers 1–9.
-3. For each valid placement, fill the cell and recursively call `solveSudoku`.
-4. If recursion fails, backtrack by resetting the cell.
-5. Continue until all cells are filled or no valid placements remain.
+1. Identify the next unfilled cell.
+2. Attempt placing numbers 1–9 sequentially.
+3. Validate each placement using Sudoku constraints.
+4. Recurse for the next cell until the puzzle is solved.
+5. Perform backtracking when a placement leads to conflict.
 
 ---
 
 ## 5. Data Flow
 
-### Step 1: User Interaction
-- Users input Sudoku numbers through the **SudokuGrid**.
-- The **ControlPanel** component triggers client-side validation or server API calls.
+### Step 1: Input
+Users input Sudoku numbers through the UI grid and initiate solving or validation actions.
 
 ### Step 2: API Request
-- The frontend sends the current Sudoku board to `/api/validate` or `/api/solve`.
+The frontend submits the grid data via JSON to the respective server endpoint.
 
-### Step 3: Server Processing
-- The Express server invokes the solver module.
-- The result is sent back as a structured JSON response.
+### Step 3: Processing
+The server runs the backtracking solver and validates the puzzle structure.
 
-### Step 4: UI Update
-- The React UI displays either an error or the solved Sudoku grid.
+### Step 4: Output
+A structured JSON response provides the solved board or an error message, which updates the UI instantly.
 
 ---
 
@@ -112,7 +110,7 @@ root/
 ### Main Interface
 ![Main Interface](./screenshots/main.png)
 
-### Solved Sudoku
+### Solved Puzzle
 ![Solved Sudoku](./screenshots/Solved.png)
 
 ---
@@ -120,40 +118,40 @@ root/
 ## 7. Installation Guide
 
 ### Prerequisites
-- Node.js (v16 or above)
-- npm
+- Node.js (v16+)
+- npm or yarn
 
-### Steps
+### Setup Steps
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/sudoku-solver-fullstack.git
-cd sudoku-solver-fullstack
+# Clone repository
+git clone https://github.com/your-username/fullstack-sudoku-solver.git
+cd fullstack-sudoku-solver
 
 # Install dependencies
 npm install
 
-# Start the development server
+# Run development environment
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to open the application.
+Open **http://localhost:3000** to preview the app in your browser.
 
 ---
 
 ## 8. API Reference
 
-### **POST /api/solve**
-Solves a Sudoku board.
+### POST /api/solve
+Solves a given Sudoku board.
 
-**Request Body:**
+**Request Example:**
 ```json
 {
   "board": [[5,3,0,0,7,0,0,0,0], [6,0,0,1,9,5,0,0,0], ...]
 }
 ```
 
-**Response:**
+**Response Example:**
 ```json
 {
   "success": true,
@@ -161,14 +159,14 @@ Solves a Sudoku board.
 }
 ```
 
-### **POST /api/validate**
-Validates a Sudoku configuration.
+### POST /api/validate
+Validates Sudoku board configuration.
 
 **Response Example:**
 ```json
 {
   "success": false,
-  "message": "Duplicate value found in row 3"
+  "message": "Duplicate entry found in column 4"
 }
 ```
 
@@ -176,22 +174,23 @@ Validates a Sudoku configuration.
 
 ## 9. Configuration Files
 
-| File | Description |
-|------|--------------|
-| `package.json` | Project dependencies and scripts |
-| `vite.config.ts` | Vite setup and integration |
-| `tsconfig.json` | TypeScript configuration |
-| `tailwind.config.ts` | Tailwind CSS styling configuration |
+| File | Purpose |
+|------|----------|
+| `package.json` | Lists dependencies and scripts. |
+| `vite.config.ts` | Defines build and dev server configuration. |
+| `tsconfig.json` | TypeScript compiler settings. |
+| `tailwind.config.ts` | Tailwind CSS theme customization. |
 
 ---
 
 ## 10. Design Guidelines
 
-Refer to `design_guidelines.md` for:
+See `design_guidelines.md` for detailed UI/UX standards, including:
 
-- Component structure and grid layout.
-- Responsive design principles.
-- Color schemes and accessibility standards.
+- Component layout and hierarchy.
+- Grid responsiveness strategies.
+- Color palette accessibility.
+- Mobile and desktop design considerations.
 
 ---
 
@@ -201,7 +200,5 @@ Refer to `design_guidelines.md` for:
 |-----------|-------------|
 | Frontend | React, Vite, Tailwind CSS |
 | Backend | Express, TypeScript |
-| Logic | JavaScript (Backtracking Algorithm) |
-| Dev Tools | Node.js, Vite, ESLint |
-
----
+| Algorithm | Recursive Backtracking (JavaScript) |
+| Dev Tools | Node.js, ESLint, Prettier |
